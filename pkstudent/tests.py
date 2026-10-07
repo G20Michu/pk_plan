@@ -127,3 +127,5 @@ class StudentScheduleViewTests(TestCase):
 		self.assertNotContains(response, "Laboratorium innej grupy")
 		self.assertContains(response, "W1")
 		self.assertContains(response, "Ostatnia aktualizacja:")
+		self.assertContains(response, 'id="week-picker"')
+		self.assertContains(response, 'value="2026-10-05"')

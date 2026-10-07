@@ -242,7 +242,28 @@ input {
 
 .week-nav {
   display: flex;
+  align-items: center;
   gap: 6px;
+}
+
+.week-date-form {
+  display: flex;
+}
+
+.week-date-form input {
+  width: 154px;
+  height: 38px;
+  padding: 0 8px;
+  border: 1px solid #bfcdc4;
+  border-radius: 4px;
+  color: var(--green-dark);
+  background: var(--white);
+  font: inherit;
+}
+
+.week-date-form input:focus-visible {
+  outline: 2px solid var(--green);
+  outline-offset: 2px;
 }
 
 .week-nav a {
@@ -403,10 +424,13 @@ input {
 
   .topbar {
     height: 62px;
+    gap: 12px;
   }
 
   .sync-indicator {
+    min-width: 0;
     font-size: 11px;
+    text-align: right;
   }
 
   .lookup {
@@ -425,7 +449,8 @@ input {
   }
 
   .lookup-controls button {
-    padding: 0 12px;
+    min-height: 46px;
+    padding: 0 14px;
   }
 
   .student-bar {
@@ -440,6 +465,16 @@ input {
 
   .week-heading h2 {
     font-size: 18px;
+  }
+
+  .week-heading {
+    align-items: stretch;
+    flex-direction: column;
+    gap: 12px;
+  }
+
+  .week-date-form input {
+    width: min(154px, 100%);
   }
 
   .week-grid {
@@ -466,12 +501,20 @@ input {
   }
 
   .day-events {
-    grid-template-columns: repeat(auto-fit, minmax(185px, 1fr));
+    grid-template-columns: 1fr;
     padding: 10px;
   }
 
   .event-item {
-    grid-template-columns: 1fr;
+    grid-template-columns: 58px minmax(0, 1fr);
+    gap: 10px;
+    padding: 11px 10px;
+  }
+
+  .event-time {
+    align-items: start;
+    flex-direction: column;
+    gap: 2px;
   }
 
   .page-footer {
