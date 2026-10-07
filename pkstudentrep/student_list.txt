@@ -1,0 +1,34 @@
+import pandas as pd
+
+def wczytaj_uczniow(sciezka_do_pliku):
+    try:
+        # Wczytanie pliku Excel
+        df = pd.read_excel(sciezka_do_pliku)
+        
+        # Wyświetlenie podglądu danych w terminalu
+        print("--- Podgląd tabeli z Excela ---")
+        print(df)
+        print("-------------------------------\n")
+        
+        # Iteracja przez każdy wiersz (ucznia)
+        print("Przetwarzanie wierszy:")
+        for index, row in df.iterrows():
+            # Zakładamy, że kolumny w Excelu nazywają się 'Numer' i 'Nazwisko' (lub podobnie)
+            # Zmień nazwy w nawiasach kwadratowych na takie, jakie masz dokładnie w swoim pliku!
+            numer_albumu = row['Numer']
+            
+            print(f"Wiersz {index + 1}: Znaleziono ucznia o numerze: {numer_albumu}")
+            
+            # W tym miejscu możesz w przyszłości dodać kod zapisujący do bazy Django, np:
+            # Student.objects.get_or_create(number=numer_albumu)
+
+    except FileNotFoundError:
+        print(f"Błąd: Nie znaleziono pliku o ścieżce: {sciezka_do_pliku}")
+    except KeyError as e:
+        print(f"Błąd: W pliku Excel brakuje kolumny: {e}")
+    except Exception as e:
+        print(f"Wystąpił nieoczekiwany błąd: {e}")
+
+# Uruchomienie funkcji dla pliku 'uczniowie.xlsx'
+if __name__ == "__main__":
+    wczytaj_uczniow("uczniowie.xlsx")

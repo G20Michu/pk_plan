@@ -1,0 +1,113 @@
+{% load static %}
+<!doctype html>
+<html lang="pl">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Plan zajęć | PK Plan</title>
+  <link rel="stylesheet" href="{% static 'pkstudent/schedule.css' %}">
+</head>
+<body>
+  <div class="page-shell">
+    <header class="topbar">
+      <a class="brand" href="/" aria-label="PK Plan, strona główna">
+        <span class="brand-mark">PK</span>
+        <span class="brand-name">PLAN</span>
+      </a>
+      <div class="sync-indicator">
+        <span class="sync-dot" aria-hidden="true"></span>
+        <span>{% if last_synced_at %}Ostatnia aktualizacja: {{ last_synced_at|date:"H:i" }}{% else %}Plan nie został jeszcze zaktualizowany{% endif %}</span>
+      </div>
+    </header>
+
+    <main>
+      <section class="lookup">
+        <div class="lookup-heading">
+          <p class="eyebrow">PLAN STUDENTA</p>
+          <h1>Plan zajęć</h1>
+        </div>
+        <form class="lookup-form" method="get" action="">
+          <label for="student-number">Numer albumu</label>
+          <div class="lookup-controls">
+            <input id="student-number" name="number" type="number" min="1" step="1"
+                   value="{{ number }}" placeholder="np. 127" required>
+            <input type="hidden" name="week" value="{{ week_start|date:'Y-m-d' }}">
+            <button type="submit">Pokaż plan <span aria-hidden="true">↗</span></button>
+          </div>
+        </form>
+      </section>
+
+      {% if error %}
+        <p class="notice notice-error" role="alert">{{ error }}</p>
+      {% endif %}
+
+      {% if student %}
+        <section class="student-bar" aria-label="Dane studenta">
+          <div>
+            <p class="eyebrow">NUMER ALBUMU</p>
+            <p class="student-number">{{ student.number }}</p>
+          </div>
+          <div class="group-list">
+            <span class="group-label">Grupy</span>
+            {% for group in student.student_groups.all %}
+              <span class="group-chip">{{ group.section }}</span>
+            {% empty %}
+              <span class="muted">Brak przypisanych grup</span>
+            {% endfor %}
+          </div>
+        </section>
+
+        <section class="week-section">
+          <div class="week-heading">
+            <div>
+              <p class="eyebrow">TYDZIEŃ</p>
+              <h2>{{ week_start|date:"j E" }} <span>—</span> {{ week_end|date:"j E Y" }}</h2>
+            </div>
+            <nav class="week-nav" aria-label="Nawigacja tygodniowa">
+              <a href="?number={{ student.number }}&amp;week={{ previous_week|date:'Y-m-d' }}" aria-label="Poprzedni tydzień" title="Poprzedni tydzień">←</a>
+              <a href="?number={{ student.number }}&amp;week={{ next_week|date:'Y-m-d' }}" aria-label="Następny tydzień" title="Następny tydzień">→</a>
+            </nav>
+          </div>
+
+          <div class="week-grid">
+            {% for day in days %}
+              <section class="day-column{% if day.date == today %} is-today{% endif %}">
+                <header class="day-heading">
+                  <h3>{{ day.weekday }}</h3>
+                  <time datetime="{{ day.date|date:'Y-m-d' }}">{{ day.date|date:"j M" }}</time>
+                </header>
+                <div class="day-events">
+                  {% for event in day.events %}
+                    <article class="event-item">
+                      <div class="event-time">
+                        <strong>{{ event.start_time|time:"H:i" }}</strong>
+                        <span>{{ event.end_time|time:"H:i" }}</span>
+                      </div>
+                      <div class="event-detail">
+                        <h4>{{ event.event_type }}</h4>
+                        <p class="event-place">{{ event.room|default:"Sala niepodana" }}{% if event.instructor %}<span> · </span>{{ event.instructor }}{% endif %}</p>
+                        <span class="event-group">{{ event.group_label }}</span>
+                      </div>
+                    </article>
+                  {% empty %}
+                    <p class="empty-day">Brak zajęć</p>
+                  {% endfor %}
+                </div>
+              </section>
+            {% endfor %}
+          </div>
+        </section>
+      {% elif number and not error %}
+        <p class="notice">Nie znaleziono planu dla tego numeru.</p>
+      {% elif not schedule_loaded %}
+        <p class="notice">Plan nie został jeszcze pobrany.</p>
+      {% endif %}
+    </main>
+
+    <footer class="page-footer">
+      <span>PK PLAN <span class="footer-separator">/</span> STACJONARNE</span>
+      <span>{% if last_synced_at %}Dane zaktualizowane {{ last_synced_at|date:"j M, H:i" }}{% else %}Oczekiwanie na pierwszą synchronizację{% endif %}</span>
+    </footer>
+  </div>
+</body>
+</html>

@@ -1,0 +1,26 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Django / local data
+db.sqlite3
+db.sqlite3-*
+media/
+staticfiles/
+*.log
+*.xls
+*.xlsx
+
+# Virtual environments and local configuration
+.venv/
+venv/
+env/
+.env
+.env.*
+!.env.example
+
+# Editors and operating systems
+.DS_Store
+.vscode/
+.idea/
