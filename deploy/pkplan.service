@@ -1,0 +1,19 @@
+[Unit]
+Description=PK Plan Django application
+After=network.target
+
+[Service]
+Type=simple
+User=pkplan
+Group=pkplan
+WorkingDirectory=/srv/pk_plan
+Environment=PYTHONUNBUFFERED=1
+Environment=DJANGO_SETTINGS_MODULE=Pkplan.settings
+ExecStartPre=/srv/pk_plan/.venv/bin/python manage.py collectstatic --noinput
+ExecStart=/srv/pk_plan/.venv/bin/gunicorn --workers 3 --bind 127.0.0.1:9000 --access-logfile - --error-logfile - Pkplan.wsgi:application
+Restart=on-failure
+RestartSec=5
+TimeoutStopSec=30
+
+[Install]
+WantedBy=multi-user.target
