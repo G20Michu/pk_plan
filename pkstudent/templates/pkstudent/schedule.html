@@ -65,15 +65,15 @@
             </div>
             <nav class="week-nav" aria-label="Nawigacja tygodniowa">
               <a href="?number={{ student.number }}&amp;week={{ previous_week|date:'Y-m-d' }}" aria-label="Poprzedni tydzień" title="Poprzedni tydzień">←</a>
-              <form class="week-date-form" method="get" action="">
-                <input type="hidden" name="number" value="{{ student.number }}">
-                <label class="visually-hidden" for="week-picker">Wybierz datę tygodnia</label>
-                <input id="week-picker" name="week" type="date" value="{{ week_start|date:'Y-m-d' }}"
-                       title="Wybierz datę tygodnia" onchange="this.form.requestSubmit()">
-              </form>
               <a href="?number={{ student.number }}&amp;week={{ next_week|date:'Y-m-d' }}" aria-label="Następny tydzień" title="Następny tydzień">→</a>
             </nav>
           </div>
+          <form class="week-date-form" method="get" action="">
+            <input type="hidden" name="number" value="{{ student.number }}">
+            <label for="week-picker">Wybierz datę</label>
+            <input id="week-picker" name="week" type="date" value="{{ week_start|date:'Y-m-d' }}"
+                   title="Wybierz datę tygodnia" onchange="this.form.requestSubmit()">
+          </form>
 
           <div class="week-grid">
             {% for day in days %}

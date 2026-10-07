@@ -248,11 +248,20 @@ input {
 
 .week-date-form {
   display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 10px;
+  margin: -7px 0 18px;
+}
+
+.week-date-form label {
+  color: var(--muted);
+  font-size: 13px;
 }
 
 .week-date-form input {
-  width: 154px;
-  height: 38px;
+  width: 180px;
+  height: 42px;
   padding: 0 8px;
   border: 1px solid #bfcdc4;
   border-radius: 4px;
@@ -267,8 +276,8 @@ input {
 }
 
 .week-nav a {
-  width: 38px;
-  height: 38px;
+  width: 48px;
+  height: 48px;
   display: grid;
   place-items: center;
   border: 1px solid #bfcdc4;
@@ -473,23 +482,39 @@ input {
     gap: 12px;
   }
 
+  .week-nav a {
+    width: 52px;
+    height: 52px;
+    font-size: 24px;
+  }
+
+  .week-date-form {
+    justify-content: flex-start;
+    flex-wrap: wrap;
+    margin: 0 0 16px;
+  }
+
   .week-date-form input {
-    width: min(154px, 100%);
+    width: min(220px, 100%);
+    height: 46px;
   }
 
   .week-grid {
-    grid-template-columns: 1fr;
+    grid-template-columns: none;
+    grid-auto-flow: column;
+    grid-auto-columns: minmax(230px, 85%);
+    overflow-x: auto;
+    overscroll-behavior-x: contain;
+    scroll-snap-type: x mandatory;
+    scrollbar-width: thin;
   }
 
   .day-column,
   .day-column:nth-child(4) {
     min-height: auto;
-    border-top: 1px solid var(--line);
-    border-right: 0;
-  }
-
-  .day-column:first-child {
     border-top: 0;
+    border-right: 1px solid var(--line);
+    scroll-snap-align: start;
   }
 
   .day-heading {
